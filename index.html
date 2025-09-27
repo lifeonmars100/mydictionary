@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>나만의 단어장</title>
+
+    <!-- ===== 변경: 홈 화면 아이콘 및 PWA를 위한 manifest 연결 ===== -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#007aff">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <div id="app-container">
+
+        <!-- ===== 1. 설정 뷰 (최초 실행 시) ===== -->
+        <div id="setup-view" class="view hidden">
+            <!-- 내용은 변경 없음 -->
+            <div class="setup-box">
+                <i class="fas fa-book-open setup-icon"></i>
+                <h1>단어장 설정</h1>
+                <p>사전을 사용하려면 단어 데이터 파일(words.json)을 먼저 가져와야 합니다.</p>
+                <label for="file-input" class="btn btn-primary">
+                    <i class="fas fa-file-import"></i> 단어 파일 가져오기
+                </label>
+                <input type="file" id="file-input" accept=".json">
+                <p id="setup-status" class="setup-status"></p>
+            </div>
+        </div>
+
+        <!-- ===== 2. 메인 뷰 (사전) ===== -->
+        <div id="main-view" class="view hidden">
+            <!-- 내용은 변경 없음 -->
+            <header class="app-header">
+                <h1>나만의 단어장</h1>
+                <div class="header-actions">
+                    <button id="favorites-list-btn" class="icon-btn"><i class="far fa-star"></i></button>
+                    <button id="settings-btn" class="icon-btn"><i class="fas fa-cog"></i></button>
+                </div>
+            </header>
+            <div class="search-wrapper">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="search-input" placeholder="단어를 검색하세요...">
+                    <button id="voice-search-btn" class="icon-btn"><i class="fas fa-microphone"></i></button>
+                    <button id="clear-search-btn" class="icon-btn hidden"><i class="fas fa-times-circle"></i></button>
+                </div>
+                <button id="search-btn" class="btn btn-primary search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            <div id="word-list-container">
+                <p class="placeholder">검색어를 입력하여 단어를 찾아보세요.</p>
+            </div>
+        </div>
+
+        <!-- ===== 3. 상세 뷰 (플래시카드) ===== -->
+        <div id="detail-view" class="view hidden">
+            <!-- 내용은 변경 없음 -->
+            <header class="app-header">
+                <button id="back-button" class="icon-btn"><i class="fas fa-arrow-left"></i></button>
+                <div class="header-spacer"></div>
+            </header>
+            <div class="flashcard-wrapper">
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div id="flashcard-front" class="flashcard-face">
+                            <p id="flashcard-eng"></p>
+                        </div>
+                        <div id="flashcard-back" class="flashcard-face">
+                            <p id="flashcard-kor"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-controls">
+                <button id="favorite-button" class="icon-btn large-icon"><i class="far fa-star"></i></button>
+                <button id="speak-button" class="icon-btn large-icon"><i class="fas fa-volume-up"></i></button>
+            </div>
+        </div>
+        
+        <!-- ===== 4. 설정 모달 (팝업) ===== -->
+        <div id="settings-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <header class="modal-header">
+                    <h2>설정</h2>
+                    <button id="close-modal-btn" class="icon-btn modal-close-btn"><i class="fas fa-times"></i></button>
+                </header>
+                <div class="setting-item">
+                    <!-- 내용은 변경 없음 -->
+                    <h4>폰트 크기</h4>
+                    <div class="font-size-controls">
+                        <button id="decrease-font-btn" class="font-btn">-</button>
+                        <span id="font-size-display">16px</span>
+                        <button id="increase-font-btn" class="font-btn">+</button>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <!-- ===== 변경: 단어 수 표시를 위한 span 추가 ===== -->
+                    <h4>데이터 관리 <span id="word-count-display" class="word-count"></span></h4>
+                    <p class="info-text">단어 데이터는 사용자의 브라우저에 저장됩니다. 앱 폴더를 삭제해도 이 데이터는 자동으로 지워지지 않습니다.</p>
+                    <!-- ===== 변경: 버튼 중앙 정렬을 위한 div 추가 ===== -->
+                    <div class="setting-action-center">
+                        <button id="reset-data-btn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> 모든 단어 데이터 초기화</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 추가: JSON 로딩 오버레이 ===== -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <img src="loading-spinner.svg" alt="Loading...">
+        <p>단어를 저장 중입니다...</p>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    <script src="app.js"></script>
+</body>
+</html>

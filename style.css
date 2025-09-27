@@ -1,0 +1,107 @@
+/* 기본 & 변수 설정 (변경 없음) */
+:root {
+    --primary-color: #007aff;
+    --background-color: #f0f2f5;
+    --card-background: #ffffff;
+    --text-color: #1c1e21;
+    --subtle-text-color: #65676b;
+    --border-color: #ddd;
+    --danger-color: #e74c3c;
+}
+html { font-size: 16px; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--background-color); color: var(--text-color); display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding-top: 20px; }
+#app-container { width: 100%; max-width: 420px; height: 85vh; min-height: 650px; background-color: var(--card-background); border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column; }
+.view { width: 100%; height: 100%; display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
+.hidden { display: none !important; }
+
+/* 버튼, 헤더, 설정 뷰 (변경 없음) */
+.btn { padding: 10px 15px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.btn-primary { background-color: var(--primary-color); color: white; }
+.btn-primary:hover { background-color: #0056b3; }
+.btn-danger { background-color: var(--danger-color); color: white; }
+.btn-danger:hover { background-color: #c0392b; }
+.icon-btn { background: none; border: none; font-size: 22px; color: var(--subtle-text-color); cursor: pointer; padding: 5px; }
+.app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-shrink: 0; }
+.app-header h1 { font-size: 24px; }
+.header-actions { display: flex; gap: 15px; }
+.header-actions .icon-btn.active { color: var(--primary-color); }
+.header-spacer { flex-grow: 1; }
+#setup-view { justify-content: center; align-items: center; text-align: center; }
+.setup-box { max-width: 300px; }
+.setup-icon { font-size: 48px; color: var(--primary-color); margin-bottom: 20px; }
+.setup-box h1 { font-size: 22px; margin-bottom: 10px; }
+.setup-box p { font-size: 16px; margin-bottom: 25px; color: var(--subtle-text-color); line-height: 1.5; }
+#file-input { display: none; }
+.setup-status { margin-top: 20px; font-size: 16px; font-weight: 500; color: var(--primary-color); }
+
+/* 메인 뷰, 상세 뷰 (변경 없음) */
+.search-wrapper { display: flex; gap: 10px; margin-bottom: 20px; }
+.search-container { position: relative; flex-grow: 1; display: flex; align-items: center; }
+.search-icon { position: absolute; left: 18px; color: var(--subtle-text-color); }
+#search-input { width: 100%; padding: 12px 65px 12px 50px; border: 1px solid var(--border-color); border-radius: 25px; font-size: 16px; background-color: #f0f2f5; }
+#search-input:focus { outline: none; border-color: var(--primary-color); }
+#voice-search-btn { position: absolute; right: 35px; }
+#clear-search-btn { position: absolute; right: 8px; font-size: 18px; }
+.search-btn { padding: 0 15px; font-size: 18px; border-radius: 25px; }
+#word-list-container { flex-grow: 1; overflow-y: auto; }
+.word-item { padding: 15px 10px; border-bottom: 1px solid #f0f0f0; cursor: pointer; line-height: 1.5; font-size: 1rem; }
+.word-item:hover { background-color: #f9f9f9; }
+.word-item-eng { font-weight: bold; color: var(--text-color); }
+.word-item-kor { color: var(--subtle-text-color); margin-left: 8px; }
+.placeholder { text-align: center; padding: 40px; font-size: 16px; color: var(--subtle-text-color); }
+#detail-view { padding-bottom: 40px; }
+.flashcard-wrapper { flex-grow: 1; display: flex; align-items: center; }
+.flashcard { background-color: transparent; width: 100%; height: 450px; perspective: 1000px; cursor: pointer; }
+.flashcard-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
+.flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+.flashcard-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; font-weight: 500; color: white; border-radius: 15px; padding: 25px; overflow-y: auto; }
+#flashcard-front { background: linear-gradient(45deg, #007aff, #00c6ff); justify-content: center; align-items: center; text-align: center; }
+#flashcard-back { background: linear-gradient(45deg, #34c759, #30d158); justify-content: flex-start; align-items: flex-start; text-align: left; transform: rotateY(180deg); }
+#flashcard-eng { font-size: 2rem; font-weight: bold; overflow-wrap: break-word; min-width: 0; }
+#flashcard-kor { font-size: 1.375rem; }
+.detail-controls { text-align: center; padding-top: 20px; }
+.large-icon { font-size: 28px; margin: 0 20px; }
+#favorite-button.favorited { color: #ffcc00; }
+
+/* 설정 모달 (수정됨) */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+.modal-content { background: var(--card-background); padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; position: relative; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.modal-header h2 { font-size: 20px; }
+.modal-close-btn { font-size: 20px; }
+.setting-item { margin-top: 20px; }
+.setting-item h4 { font-size: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+/* ★★★★★ 추가: 단어 수 표시 스타일 ★★★★★ */
+.word-count { font-size: 14px; font-weight: 500; color: var(--primary-color); background-color: #eef5ff; padding: 4px 8px; border-radius: 8px; }
+.info-text { font-size: 14px; color: var(--subtle-text-color); margin-bottom: 15px; line-height: 1.4; }
+.font-size-controls { display: flex; align-items: center; justify-content: center; gap: 15px; }
+.font-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-color); font-size: 20px; cursor: pointer; }
+#font-size-display { font-size: 18px; font-weight: 500; }
+/* ★★★★★ 추가: 버튼 중앙 정렬 스타일 ★★★★★ */
+.setting-action-center { text-align: center; margin-top: 10px; }
+
+/* 토스트 알림 (변경 없음) */
+.toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.75); color: white; padding: 12px 20px; border-radius: 25px; font-size: 14px; z-index: 2000; transition: bottom 0.5s ease; }
+.toast.show { bottom: 30px; }
+
+/* ★★★★★ 추가: 로딩 오버레이 스타일 ★★★★★ */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+}
+.loading-overlay p {
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-color);
+}
